@@ -41,8 +41,10 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileTree;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.logging.Logger;
+import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.TaskAction;
 
 /**
@@ -102,7 +104,7 @@ public abstract class AbstractEditorconfigTask extends DefaultTask {
         return tree.getFiles();
     }
 
-    /** Rhe {@link EditorconfigExtension} initialized in {@link #perform()} */
+    /** The {@link EditorconfigExtension} initialized in {@link #perform()} */
     protected EditorconfigExtension editorconfigExtension;
 
     protected abstract ViolationHandler createHandler();
@@ -119,6 +121,11 @@ public abstract class AbstractEditorconfigTask extends DefaultTask {
      * @return a new {@link Resource} or a new {@link EditableResource}
      */
     protected abstract Resource createResource(Path absFile, Path relFile, Charset encoding);
+
+    @Classpath
+    public FileCollection getClasspath() {
+        return getProject().getConfigurations().getAt(EditorconfigExtension.NAME);
+    }
 
     /**
      * Performs this task.

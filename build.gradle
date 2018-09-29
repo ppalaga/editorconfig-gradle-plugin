@@ -28,7 +28,7 @@ group = 'org.ec4j.gradle'
 version = '0.0.3-SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("-SNAPSHOT")
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 repositories {
     mavenLocal()
@@ -38,7 +38,6 @@ repositories {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'org.ec4j.maven:ec4j-linters:0.0.5'
     testCompile 'junit:junit:4.12'
     testCompile gradleTestKit()
     testCompile 'org.slf4j:slf4j-api:1.7.25'

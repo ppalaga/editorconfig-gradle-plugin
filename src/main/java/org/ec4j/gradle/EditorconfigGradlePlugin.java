@@ -18,6 +18,8 @@ package org.ec4j.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.DependencySet;
 
 /**
  * Adds {@link EditorconfigExtension}, {@link EditorconfigCheckTask} and {@link EditorconfigFormatTask}.
@@ -26,10 +28,18 @@ import org.gradle.api.Project;
  */
 public class EditorconfigGradlePlugin implements Plugin<Project> {
 
+    private static final String EC4J_LINTERS_VERSION = "0.0.5";
+
     /** {@inheritDoc} */
     @Override
-    public void apply(Project project) {
+    public void apply(final Project project) {
         project.getExtensions().create(EditorconfigExtension.NAME, EditorconfigExtension.class);
+
+        final Configuration configuration = project.getConfigurations().getAt(EditorconfigExtension.NAME);
+        configuration.defaultDependencies((DependencySet dependencies) -> {
+            dependencies.add(project.getDependencies().create("org.ec4j.maven:ec4j-linters:" + EC4J_LINTERS_VERSION));
+        });
+
         project.getTasks().create(EditorconfigCheckTask.NAME, EditorconfigCheckTask.class);
         project.getTasks().create(EditorconfigFormatTask.NAME, EditorconfigFormatTask.class);
     }
